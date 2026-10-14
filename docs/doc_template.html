@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How Nightdesk works</title><style>
+:root{color-scheme:dark;--bg:#0b1220;--ink:#ece8dd;--muted:#a7b3c5;--gold:#f2b24c}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.65 system-ui,sans-serif}main{max-width:900px;margin:64px auto;padding:0 24px 64px}
+h1{font-size:clamp(40px,7vw,72px);line-height:1.05;letter-spacing:-2px}h2{margin-top:48px;font-size:30px}p,li{max-width:760px}a{color:var(--gold)}
+.tag{color:var(--gold);font-weight:700}.lead{font-size:24px;color:var(--muted)}.card{padding:24px;border:1px solid #2b3950;border-radius:16px;background:#121e31;margin:20px 0}
+table{border-collapse:collapse;width:100%}td,th{text-align:left;border-bottom:1px solid #2b3950;padding:12px 8px}.note{color:var(--muted);font-size:16px}code{color:var(--gold)}
+</style></head><body><main>
+<p class="tag">Nightdesk · practice money only</p><h1>A small stock research lab.<br>On your computer.</h1>
+<p class="lead">Nightdesk ranks stocks and simulates trades. Each installation starts fresh. It never connects to a broker or moves real money.</p>
+<div class="card"><strong>First launch</strong><p>Choose whether to connect to public Yahoo Finance and Wikipedia data. Nightdesk then downloads price history and trains your forecasting model locally. This can take a long time. The app shows its progress and lets you retry if a data provider fails.</p><p>You control when to turn on automatic practice trading.</p></div>
+<h2>Five steps in a trading day</h2><ol>
+<li>Receive public market prices during the New York session.</li><li>Measure price and volume patterns for each stock.</li>
+<li>Average eight forecasting models to rank the stocks.</li><li>Use the shared portfolio rules to choose holdings and manage risk.</li>
+<li>Fill practice orders when a fresh price arrives, with simulated costs.</li></ol>
+<p>The regular session runs from 9:30 am to 4:00 pm New York time. The app displays times for your computer's time zone.</p>
+<h2>What the historical tests found</h2><p>These are bundled historical simulations, not your account's returns or a guarantee for your newly trained model.</p>
+<div class="card"><table><thead><tr><th>2010–2024</th><th>Annual return</th><th>Worst fall</th></tr></thead><tbody id="results"></tbody></table></div>
+<p>The test used S&amp;P 500 membership as it changed through time, charged trading costs, and trained on earlier years before scoring later years. Yahoo lacks prices for many delisted stocks, so survivorship bias remains. The implementation uses simplified fills and does not model market impact.</p>
+<p>Several ideas looked better on the development years but failed later periods. Those candidates remain documented and are not the live default. The period since 2025 has been examined more than once and is no longer an untouched test.</p>
+<h2>Where your data goes</h2><p>Your account, settings, downloaded prices and trained model stay in your own local Nightdesk data directory. The source repository contains none of the original developer's account data, logs, credentials or model weights.</p>
+<p>Yahoo receives requests for stock symbols and your normal connection information when you enable it. There is no Yahoo login, API key, broker connection or central Nightdesk server. Optional headline classification uses a model that you configure yourself; it is disabled by default.</p>
+<h2>Risk controls</h2><p>Cautious, Steady and Fully invested use different cash and risk limits. More exposure can mean larger losses. Stop-losses and other guardrails simulate rules; they cannot ensure a profitable result.</p>
+<h2>Explore and rebuild</h2><p>The repository includes the engine, screens, native Mac wrapper, tests, historical research, and a clean explainer-video source. The video uses diagrams and historical results instead of private account screenshots.</p>
+<p class="note">Research and education only. This is not financial advice. Free data services can be delayed, unavailable, incomplete or rate-limited.</p>
+</main><script>const D=/*__ND_DATA__*/null;const names={cautious:'Cautious',steady:'Steady',full:'Fully invested',spy:'S&P 500'};
+const pct=x=>x==null?'—':(100*x).toFixed(1)+'%';document.querySelector('#results').innerHTML=Object.entries(names).map(([k,n])=>`<tr><td>${n}</td><td>${pct(D.modes[k]?.cagr)}</td><td>${pct(D.modes[k]?.max_drawdown)}</td></tr>`).join('');</script></body></html>

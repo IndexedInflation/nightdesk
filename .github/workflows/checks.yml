@@ -1,0 +1,73 @@
+name: Source checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Scan source and full Git history
+        run: python tools/privacy_check.py --history
+
+  tests:
+    needs: privacy
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: "3.11"
+          - os: ubuntu-latest
+            python: "3.13"
+          - os: macos-latest
+            python: "3.11"
+    runs-on: ${{ matrix.os }}
+    env:
+      NIGHTDESK_HOME: ${{ runner.temp }}/nightdesk-test-account
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - name: Install Mac OpenMP prerequisite
+        if: runner.os == 'macOS'
+        run: brew list libomp >/dev/null 2>&1 || brew install libomp
+      - name: Install pinned software
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install --no-deps -e .
+          python scripts/doctor.py
+          python -m pip check
+      - name: Run isolated offline tests
+        run: python -m pytest -q
+      - uses: actions/setup-node@v4
+        if: runner.os == 'Linux' && matrix.python == '3.11'
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Verify offline first-run browser screens
+        if: runner.os == 'Linux' && matrix.python == '3.11'
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          node tools/uitest.mjs
+      - name: Build source and wheel packages
+        run: python -m build --no-isolation
+      - name: Verify wheel assets and isolated wheel launch
+        run: python scripts/check_wheel.py dist/*.whl
+      - name: Compile optional Mac window
+        if: runner.os == 'macOS'
+        run: bash shell/build.sh

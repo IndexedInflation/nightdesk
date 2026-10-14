@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=79,<81", "wheel>=0.45,<1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nightdesk"
+version = "0.1.0"
+description = "Local practice trading and transparent historical research"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+dependencies = [
+  "beautifulsoup4==4.15.0",
+  "fastapi==0.143.0",
+  "feedparser==6.0.14",
+  "httpx==0.28.1",
+  "lightgbm==4.7.0",
+  "lxml==6.1.3",
+  "numpy==2.2.6",
+  "pandas==3.0.6",
+  "pandas-market-calendars==5.5.0",
+  "pyarrow==26.0.0",
+  "scikit-learn==1.9.1",
+  "uvicorn==0.54.0",
+  "websockets==17.2",
+  "yfinance==1.7.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest==9.1.1"]
+
+[project.scripts]
+nightdesk = "nightdesk.__main__:main"
+
+[tool.setuptools]
+package-dir = {"" = "engine"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["engine"]
+include = ["nightdesk", "nightdesk.*"]

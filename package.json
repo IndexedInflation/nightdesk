@@ -1,0 +1,13 @@
+{
+  "name": "nightdesk-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional local browser tests and explainer video rendering",
+  "engines": {"node": ">=20"},
+  "scripts": {
+    "browsers:install": "playwright install chromium",
+    "ui:test": "node tools/uitest.mjs",
+    "video:preview": "node video/src/preview.mjs all"
+  },
+  "devDependencies": {"playwright": "1.64.0"}
+}

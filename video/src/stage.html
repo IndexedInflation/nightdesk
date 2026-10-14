@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Nightdesk, explained (video stage)</title>
+<link rel="stylesheet" href="stage.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="sky" width="1920" height="1080"></canvas>
+  <div id="scenes"></div>
+  <div id="hud">
+    <div id="brand"><i id="lamp"></i><span>Nightdesk, explained</span></div>
+    <div id="chapter"></div>
+    <div id="caption"><span id="captext"></span></div>
+    <div id="progress"><div id="segs"></div><div id="fill"></div><div id="knob"></div></div>
+    <div id="left"></div>
+  </div>
+</div>
+<script src="../build/data.js"></script>
+<script src="engine.js"></script>
+<script src="scenes.js"></script>
+<script src="scenes2.js"></script>
+<script>Stage.boot();</script>
+</body>
+</html>

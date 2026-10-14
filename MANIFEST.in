@@ -1,0 +1,16 @@
+include README.md LICENSE AGENTS.md
+include .gitignore pytest.ini
+include How-Nightdesk-Works.html
+recursive-include ui *.html *.css *.js
+recursive-include research *.json *.md
+recursive-include tests *.py
+include requirements*.txt
+include package.json package-lock.json
+include Install.command Launch.command
+recursive-include scripts *.py *.sh
+recursive-include shell *.swift *.sh
+recursive-include tools *.py *.mjs
+include video/*.py video/*.md
+recursive-include video/src *.py *.mjs *.js *.css *.html
+recursive-include docs *.html *.md
+global-exclude __pycache__ *.py[cod] .DS_Store
