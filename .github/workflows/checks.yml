@@ -32,11 +32,13 @@ jobs:
             python: "3.13"
           - os: macos-latest
             python: "3.11"
+          - os: macos-15-intel
+            python: "3.11"
     runs-on: ${{ matrix.os }}
-    env:
-      NIGHTDESK_HOME: ${{ runner.temp }}/nightdesk-test-account
     steps:
       - uses: actions/checkout@v4
+      - name: Use a disposable local account
+        run: echo "NIGHTDESK_HOME=$RUNNER_TEMP/nightdesk-test-account" >> "$GITHUB_ENV"
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
